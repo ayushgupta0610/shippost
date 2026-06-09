@@ -4,6 +4,8 @@
 `uninstall_launchd` / `launchd_status` touch the filesystem + `launchctl`.
 """
 
+import plistlib
+import shlex
 import shutil
 import subprocess
 from pathlib import Path
@@ -45,28 +47,19 @@ def build_plist(
     open_x: bool = False,
     program: str | None = None,
 ) -> str:
-    """A launchd agent that runs `shippost remind run` daily at hour:minute."""
+    """A launchd agent that runs `shippost remind run` daily at hour:minute.
+
+    Built with plistlib so paths/args containing XML-special chars are escaped.
+    """
     args = _run_args(repo=repo, tone=tone, model=model, open_x=open_x, program=program)
-    args_xml = "\n".join(f"        <string>{a}</string>" for a in args)
-    return (
-        '<?xml version="1.0" encoding="UTF-8"?>\n'
-        '<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" '
-        '"http://www.apple.com/DTDs/PropertyList-1.0.dtd">\n'
-        '<plist version="1.0">\n'
-        "<dict>\n"
-        f"    <key>Label</key>\n    <string>{LABEL}</string>\n"
-        "    <key>ProgramArguments</key>\n"
-        f"    <array>\n{args_xml}\n    </array>\n"
-        f"    <key>WorkingDirectory</key>\n    <string>{repo}</string>\n"
-        "    <key>StartCalendarInterval</key>\n"
-        "    <dict>\n"
-        f"        <key>Hour</key>\n        <integer>{hour}</integer>\n"
-        f"        <key>Minute</key>\n        <integer>{minute}</integer>\n"
-        "    </dict>\n"
-        "    <key>RunAtLoad</key>\n    <false/>\n"
-        "</dict>\n"
-        "</plist>\n"
-    )
+    data = {
+        "Label": LABEL,
+        "ProgramArguments": args,
+        "WorkingDirectory": str(repo),
+        "StartCalendarInterval": {"Hour": hour, "Minute": minute},
+        "RunAtLoad": False,
+    }
+    return plistlib.dumps(data).decode("utf-8")
 
 
 def build_cron_line(
@@ -79,10 +72,13 @@ def build_cron_line(
     open_x: bool = False,
     program: str | None = None,
 ) -> str:
-    """A crontab line that runs the reminder daily at hour:minute."""
+    """A crontab line that runs the reminder daily at hour:minute.
+
+    Paths/args are shell-quoted so repos with spaces or special chars work.
+    """
     args = _run_args(repo=repo, tone=tone, model=model, open_x=open_x, program=program)
-    cmd = " ".join(args)
-    return f"{minute} {hour} * * * cd {repo} && {cmd}"
+    cmd = shlex.join(args)
+    return f"{minute} {hour} * * * cd {shlex.quote(str(repo))} && {cmd}"
 
 
 def install_launchd(plist_content: str) -> Path:

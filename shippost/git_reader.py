@@ -15,6 +15,11 @@ class GitError(RuntimeError):
     """A git command failed or the path is not a repository."""
 
 
+class NoCommitsError(GitError):
+    """No commits matched the requested range (a subclass so callers can
+    distinguish 'nothing to do' from a real git failure)."""
+
+
 def _run_git(repo: Path, *args: str) -> str:
     result = subprocess.run(
         ["git", "-C", str(repo), *args],
@@ -59,7 +64,7 @@ def read_commits(
     raw = _run_git(repo, *args)
     records = [r for r in raw.split(_RS) if r.strip()]
     if not records:
-        raise GitError("No commits found for the given range.")
+        raise NoCommitsError("No commits found for the given range.")
 
     commits: list[CommitContext] = []
     remaining = max_total_diff_chars

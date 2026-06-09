@@ -1,7 +1,9 @@
 from unittest.mock import AsyncMock
 
+import pyperclip
+
 from shippost import remind as remind_mod
-from shippost.git_reader import GitError
+from shippost.git_reader import GitError, NoCommitsError
 from shippost.models import PostDraft
 
 
@@ -39,7 +41,7 @@ async def test_run_reminder_silent_when_no_commits(monkeypatch):
     monkeypatch.setattr(
         remind_mod,
         "draft_post",
-        AsyncMock(side_effect=GitError("No commits found for the given range.")),
+        AsyncMock(side_effect=NoCommitsError("No commits found for the given range.")),
     )
     notes = []
     monkeypatch.setattr(
@@ -49,6 +51,46 @@ async def test_run_reminder_silent_when_no_commits(monkeypatch):
     status = await remind_mod.run_reminder()
     assert status == "no-commits"
     assert notes == []
+
+
+async def test_run_reminder_notifies_on_real_git_error(monkeypatch):
+    # A genuine GitError (not "no commits") must notify, not stay silent.
+    _patch_common(monkeypatch)
+    monkeypatch.setattr(
+        remind_mod,
+        "draft_post",
+        AsyncMock(side_effect=GitError("fatal: not a git repository")),
+    )
+    notes = []
+    monkeypatch.setattr(
+        remind_mod, "send_notification", lambda t, m: notes.append((t, m))
+    )
+
+    status = await remind_mod.run_reminder()
+    assert status == "error"
+    assert len(notes) == 1
+
+
+async def test_run_reminder_swallows_clipboard_failure(monkeypatch):
+    _patch_common(monkeypatch)
+    monkeypatch.setattr(
+        remind_mod,
+        "draft_post",
+        AsyncMock(return_value=PostDraft(body="x", variants=[], model_used="m")),
+    )
+
+    def _boom(_text):
+        raise pyperclip.PyperclipException("no clipboard")
+
+    notes = []
+    monkeypatch.setattr(remind_mod.pyperclip, "copy", _boom)
+    monkeypatch.setattr(
+        remind_mod, "send_notification", lambda t, m: notes.append((t, m))
+    )
+
+    status = await remind_mod.run_reminder()
+    assert status == "ok"  # clipboard failure must not break the reminder
+    assert len(notes) == 1
 
 
 async def test_run_reminder_notifies_on_error(monkeypatch):

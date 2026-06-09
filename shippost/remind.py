@@ -19,7 +19,7 @@ from rich.console import Console
 
 from shippost import schedule
 from shippost.core import draft_post
-from shippost.git_reader import GitError
+from shippost.git_reader import GitError, NoCommitsError
 from shippost.notify import send_notification
 from shippost.voice import load_voice_examples
 
@@ -53,12 +53,9 @@ async def run_reminder(
             model=model,
             voice_examples=load_voice_examples(),
         )
-    except GitError as exc:
-        if "No commits found" in str(exc):
-            return "no-commits"  # nothing shipped today — no nag
-        send_notification("shippost", f"reminder failed: {exc}")
-        return "error"
-    except (ValueError, RuntimeError, openai.APIError) as exc:
+    except NoCommitsError:
+        return "no-commits"  # nothing shipped today — no nag
+    except (GitError, ValueError, RuntimeError, openai.APIError) as exc:
         send_notification("shippost", f"reminder failed: {exc}")
         return "error"
 
