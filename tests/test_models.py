@@ -19,6 +19,7 @@ def test_commit_defaults():
     c = _commit()
     assert c.body == ""
     assert c.files_changed == []
+    assert c.diff_summary == ""
     assert c.diff_truncated is False
 
 
@@ -44,6 +45,17 @@ def test_draft_payload_caps_variants():
         DraftPayload(body="hi", variants=["a", "b", "c"])
 
 
+def test_draft_payload_rejects_unknown_fields():
+    with pytest.raises(ValidationError):
+        DraftPayload(body="hi", bogus="nope")  # type: ignore[call-arg]
+
+
 def test_post_draft_char_count_is_computed():
     d = PostDraft(body="hello", variants=[], model_used="x")
     assert d.char_count == 5
+
+
+def test_post_draft_is_frozen():
+    d = PostDraft(body="hello", variants=[], model_used="x")
+    with pytest.raises(ValidationError):
+        d.body = "changed"  # type: ignore[misc]
