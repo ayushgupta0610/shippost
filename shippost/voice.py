@@ -8,6 +8,15 @@ from pathlib import Path
 
 PRESETS_DIR = Path(__file__).parent / "prompts"
 DEFAULT_TONE = "technical"
+VOICE_FILE = Path.home() / ".shippost" / "voice.txt"
+
+
+def load_voice_examples() -> list[str]:
+    """A few of the user's own posts (one per line) from ~/.shippost/voice.txt."""
+    if VOICE_FILE.is_file():
+        lines = VOICE_FILE.read_text(encoding="utf-8").splitlines()
+        return [ln for ln in lines if ln.strip()]
+    return []
 
 
 class VoiceError(RuntimeError):

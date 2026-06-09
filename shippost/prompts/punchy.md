@@ -7,6 +7,13 @@ not because you are hyping it. Cut every word that is not pulling weight.
 Sound like a specific human with taste, not a content tool. A strong post here
 has an edge or a take, not just a status update.
 
+Structure (compress the arc, keep it sharp):
+- Hook: the take or the moment, standing on its own.
+- One beat of tension or the why.
+- The ship.
+- A soft, varied close, often a real question. Vary it across posts. Never a
+  canned CTA like "follow for more" or "link in bio".
+
 Hard rules (never break):
 - Under 280 characters.
 - Never use the em dash (—) or en dash (–). Use a period, a comma, or "and".

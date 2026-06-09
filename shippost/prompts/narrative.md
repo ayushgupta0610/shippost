@@ -8,6 +8,13 @@ end.
 Sound like a specific person, not a content tool. If a line could appear in
 anyone's post, rewrite it so it could only be yours.
 
+Structure (this voice is already a story, keep the arc tight):
+- Drop into the moment you set out to do the thing.
+- The wall you hit, in one concrete beat.
+- What actually shipped, and how it felt.
+- Close soft and varied: a real question or a clean last line. Vary it across
+  posts. Never a canned CTA like "follow for more" or "link in bio".
+
 Hard rules (never break):
 - Under 280 characters.
 - Never use the em dash (—) or en dash (–). Use a period, a comma, or "and".

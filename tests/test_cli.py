@@ -68,3 +68,31 @@ def test_draft_reports_git_error(monkeypatch):
     result = runner.invoke(cli_mod.app, ["draft", "--print"])
     assert result.exit_code == 1
     assert "not a git repo" in result.stdout
+
+
+def test_draft_repo_is_forwarded(monkeypatch):
+    captured = {}
+
+    async def fake_draft_post(**kw):
+        captured.update(kw)
+        return PostDraft(body="x", variants=[], model_used="m")
+
+    monkeypatch.setattr(cli_mod, "draft_post", fake_draft_post)
+    result = runner.invoke(cli_mod.app, ["draft", "--print", "--repo", "/some/repo"])
+    assert result.exit_code == 0
+    assert str(captured["repo_path"]) == "/some/repo"
+
+
+def test_remind_help_lists_subcommands():
+    result = runner.invoke(cli_mod.app, ["remind", "--help"])
+    assert result.exit_code == 0
+    for sub in ("install", "uninstall", "status", "run"):
+        assert sub in result.stdout
+
+
+def test_remind_run_invokes_run_reminder(monkeypatch):
+    from shippost import remind as remind_mod
+
+    monkeypatch.setattr(remind_mod, "run_reminder", AsyncMock(return_value="ok"))
+    result = runner.invoke(cli_mod.app, ["remind", "run"])
+    assert result.exit_code == 0

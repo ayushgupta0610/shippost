@@ -15,12 +15,14 @@ from rich.panel import Panel
 from shippost.core import draft_post
 from shippost.git_reader import GitError
 from shippost.models import PostDraft
-from shippost.voice import VoiceError
+from shippost.remind import remind_app
+from shippost.voice import VoiceError, load_voice_examples
 
 app = typer.Typer(
     add_completion=False,
     help="Draft build-in-public posts from your git commits.",
 )
+app.add_typer(remind_app, name="remind")
 console = Console()
 
 
@@ -30,14 +32,6 @@ def _callback() -> None:
 
 
 _X_INTENT = "https://x.com/intent/tweet?text="
-_VOICE_FILE = Path.home() / ".shippost" / "voice.txt"
-
-
-def _load_voice_examples() -> list[str]:
-    if _VOICE_FILE.is_file():
-        lines = _VOICE_FILE.read_text(encoding="utf-8").splitlines()
-        return [ln for ln in lines if ln.strip()]
-    return []
 
 
 def _open_x(body: str) -> None:
@@ -77,6 +71,10 @@ def draft(
     model: Annotated[
         str | None, typer.Option(help="OpenRouter model slug.")
     ] = None,
+    repo: Annotated[
+        Path | None,
+        typer.Option(help="Path to the git repo to read (default: current dir)."),
+    ] = None,
     copy: Annotated[
         bool, typer.Option("--copy", help="Copy the draft to the clipboard.")
     ] = False,
@@ -98,7 +96,8 @@ def draft(
                     tone=tone,
                     prompt_path=prompt,
                     model=model,
-                    voice_examples=_load_voice_examples(),
+                    repo_path=repo,
+                    voice_examples=load_voice_examples(),
                 )
             )
     except (GitError, VoiceError, ValueError, RuntimeError, openai.APIError) as exc:

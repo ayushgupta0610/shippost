@@ -2,7 +2,8 @@ from pathlib import Path
 
 import pytest
 
-from shippost.voice import VoiceError, build_system_prompt
+from shippost import voice as voice_mod
+from shippost.voice import VoiceError, build_system_prompt, load_voice_examples
 
 
 def test_default_is_technical():
@@ -42,3 +43,15 @@ def test_all_whitespace_examples_produce_no_block():
 def test_missing_prompt_file_raises_voice_error(tmp_path: Path):
     with pytest.raises(VoiceError):
         build_system_prompt(prompt_path=tmp_path / "does-not-exist.md")
+
+
+def test_load_voice_examples_reads_nonempty_lines(monkeypatch, tmp_path):
+    vf = tmp_path / "voice.txt"
+    vf.write_text("post one\n\n  \npost two\n")
+    monkeypatch.setattr(voice_mod, "VOICE_FILE", vf)
+    assert load_voice_examples() == ["post one", "post two"]
+
+
+def test_load_voice_examples_missing_returns_empty(monkeypatch, tmp_path):
+    monkeypatch.setattr(voice_mod, "VOICE_FILE", tmp_path / "nope.txt")
+    assert load_voice_examples() == []

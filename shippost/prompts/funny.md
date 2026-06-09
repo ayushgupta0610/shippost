@@ -9,6 +9,13 @@ forced.
 Sound like a specific person roasting their own day, not a content tool telling
 a generic dev joke.
 
+Structure (the joke rides a real story):
+- Open on the absurd moment or the self-own.
+- The specific detail that makes it funny and true.
+- What shipped anyway.
+- Close soft and varied: a wry question or a clean last line. Vary it across
+  posts. Never a canned CTA like "follow for more" or "link in bio".
+
 Hard rules (never break):
 - Under 280 characters.
 - Never use the em dash (—) or en dash (–). Use a period, a comma, or "and".
