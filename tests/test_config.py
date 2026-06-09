@@ -6,7 +6,8 @@ def test_defaults_are_sane():
     assert s.default_model == "deepseek/deepseek-v4-flash"
     assert s.openrouter_base_url == "https://openrouter.ai/api/v1"
     assert s.default_tone == "technical"
-    assert s.max_diff_chars == 4000
+    assert s.default_n == 5
+    assert s.max_total_diff_chars == 6000
 
 
 def test_api_key_optional_at_construction():

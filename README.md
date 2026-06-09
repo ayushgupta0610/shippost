@@ -21,7 +21,7 @@ Until it is on PyPI, run from the cloned repo with `uv run shippost <args>`
 ```bash
 shippost draft --open          # draft, then open X's compose window pre-filled (1 click to post)
 shippost draft --n 3 --copy    # last 3 commits, copy draft to clipboard
-shippost draft                 # last commits, default voice (prints draft + hints)
+shippost draft                 # last 5 commits, default voice (prints draft + hints)
 shippost draft --tone funny    # technical | narrative | punchy | funny
 shippost draft --prompt ./my-voice.md   # bring your own prompt
 ```

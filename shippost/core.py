@@ -24,14 +24,20 @@ async def draft_post(
     effects beyond reading git + calling the LLM."""
     chosen_model = model or settings.default_model
 
+    # With no window specified, default to the last few commits instead of the
+    # whole repo history. Keeps the prompt small so generation stays fast.
+    chosen_n = n
+    if since is None and n is None:
+        chosen_n = settings.default_n
+
     # read_commits shells out (blocking); offload so async frontends (MCP/web)
     # don't stall their event loop.
     commits = await asyncio.to_thread(
         read_commits,
         since=since,
-        n=n,
+        n=chosen_n,
         repo_path=repo_path,
-        max_diff_chars=settings.max_diff_chars,
+        max_total_diff_chars=settings.max_total_diff_chars,
     )
     system_prompt = build_system_prompt(
         tone=tone or settings.default_tone,

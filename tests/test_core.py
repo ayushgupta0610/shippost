@@ -55,3 +55,31 @@ async def test_draft_post_propagates_git_error(monkeypatch):
     monkeypatch.setattr(core_mod, "read_commits", _boom)
     with pytest.raises(GitError):
         await core_mod.draft_post()
+
+
+async def test_draft_post_defaults_to_last_n_commits_when_no_window(monkeypatch):
+    captured = {}
+
+    def _capture(**kw):
+        captured.update(kw)
+        return [_commit()]
+
+    monkeypatch.setattr(core_mod, "read_commits", _capture)
+    monkeypatch.setattr(core_mod, "build_system_prompt", lambda **kw: "VOICE")
+    monkeypatch.setattr(
+        core_mod,
+        "generate_draft",
+        AsyncMock(return_value=DraftPayload(body="x", variants=[])),
+    )
+
+    # no since, no n -> default_n applied
+    await core_mod.draft_post()
+    assert captured["n"] == settings.default_n
+
+    # explicit n is respected, not overridden
+    await core_mod.draft_post(n=12)
+    assert captured["n"] == 12
+
+    # --since given -> do NOT force a default n (let the date range decide)
+    await core_mod.draft_post(since="1 day ago")
+    assert captured["n"] is None

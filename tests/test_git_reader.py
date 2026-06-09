@@ -38,9 +38,18 @@ def test_n_limits_count(repo: Path):
 
 
 def test_diff_truncation_flag(repo: Path):
-    commits = read_commits(repo_path=repo, max_diff_chars=1)
+    commits = read_commits(repo_path=repo, max_total_diff_chars=1)
     assert commits[0].diff_truncated is True
     assert len(commits[0].diff_summary) <= 1
+
+
+def test_total_diff_budget_spans_commits(repo: Path):
+    # Budget is shared across all commits, newest first. With a tiny budget the
+    # newest commit consumes it and older commits get an empty, truncated diff.
+    commits = read_commits(repo_path=repo, max_total_diff_chars=5)
+    assert sum(len(c.diff_summary) for c in commits) <= 5
+    assert commits[-1].diff_summary == ""
+    assert commits[-1].diff_truncated is True
 
 
 def test_since_filters_out_old_commits(repo: Path):

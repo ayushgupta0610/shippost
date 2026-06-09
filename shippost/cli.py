@@ -64,7 +64,8 @@ def draft(
         str | None, typer.Option(help="Git date expr, e.g. '1 day ago'.")
     ] = None,
     n: Annotated[
-        int | None, typer.Option(help="Use the last N commits.")
+        int | None,
+        typer.Option(help="Use the last N commits (default: last 5 when no --since)."),
     ] = None,
     tone: Annotated[
         str | None,
@@ -89,16 +90,17 @@ def draft(
 ) -> None:
     """Read recent commits and draft a build-in-public post."""
     try:
-        result = asyncio.run(
-            draft_post(
-                since=since,
-                n=n,
-                tone=tone,
-                prompt_path=prompt,
-                model=model,
-                voice_examples=_load_voice_examples(),
+        with console.status("[dim]reading commits and drafting…[/dim]", spinner="dots"):
+            result = asyncio.run(
+                draft_post(
+                    since=since,
+                    n=n,
+                    tone=tone,
+                    prompt_path=prompt,
+                    model=model,
+                    voice_examples=_load_voice_examples(),
+                )
             )
-        )
     except (GitError, VoiceError, ValueError, RuntimeError, openai.APIError) as exc:
         # openai.APIError covers auth/network/rate-limit failures (bad key, offline).
         console.print(f"[red]{exc}[/red]")
