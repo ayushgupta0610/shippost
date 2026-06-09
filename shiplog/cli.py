@@ -6,6 +6,7 @@ import webbrowser
 from pathlib import Path
 from typing import Annotated
 
+import openai
 import pyperclip
 import typer
 from rich.console import Console
@@ -98,7 +99,8 @@ def draft(
                 voice_examples=_load_voice_examples(),
             )
         )
-    except (GitError, VoiceError, ValueError, RuntimeError) as exc:
+    except (GitError, VoiceError, ValueError, RuntimeError, openai.APIError) as exc:
+        # openai.APIError covers auth/network/rate-limit failures (bad key, offline).
         console.print(f"[red]{exc}[/red]")
         raise typer.Exit(code=1) from exc
 

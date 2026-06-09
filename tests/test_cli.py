@@ -40,6 +40,23 @@ def test_draft_copy_uses_clipboard(monkeypatch):
     assert copied["text"] == "copy me"
 
 
+def test_draft_open_x_calls_webbrowser(monkeypatch):
+    monkeypatch.setattr(
+        cli_mod,
+        "draft_post",
+        AsyncMock(
+            return_value=PostDraft(body="hello world", variants=[], model_used="m")
+        ),
+    )
+    opened = {}
+    monkeypatch.setattr(
+        cli_mod.webbrowser, "open", lambda url: opened.setdefault("url", url)
+    )
+    result = runner.invoke(cli_mod.app, ["draft", "--open"])
+    assert result.exit_code == 0
+    assert "hello%20world" in opened["url"]
+
+
 def test_draft_reports_git_error(monkeypatch):
     from shiplog.git_reader import GitError
 
