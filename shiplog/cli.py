@@ -107,8 +107,12 @@ def draft(
     _show(result)
 
     if copy:
-        pyperclip.copy(result.body)
-        console.print("[green]copied to clipboard.[/green]")
+        try:
+            pyperclip.copy(result.body)
+            console.print("[green]copied to clipboard.[/green]")
+        except pyperclip.PyperclipException as exc:
+            # headless Linux / no clipboard backend — draft already printed above.
+            console.print(f"[yellow]clipboard unavailable: {exc}[/yellow]")
     if open_x:
         _open_x(result.body)
         console.print("[green]opened X compose window.[/green]")

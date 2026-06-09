@@ -43,6 +43,18 @@ def test_diff_truncation_flag(repo: Path):
     assert len(commits[0].diff_summary) <= 1
 
 
+def test_since_filters_out_old_commits(repo: Path):
+    # Nothing was committed in the future, so this range is empty -> GitError.
+    with pytest.raises(GitError, match="No commits found"):
+        read_commits(since="2099-01-01", repo_path=repo)
+
+
+def test_no_commits_in_empty_repo(tmp_path: Path):
+    _git(tmp_path, "init")
+    with pytest.raises(GitError):
+        read_commits(repo_path=tmp_path)
+
+
 def test_not_a_git_repo(tmp_path: Path):
     with pytest.raises(GitError):
         read_commits(repo_path=tmp_path)

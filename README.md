@@ -16,7 +16,7 @@ yourself — nothing is auto-published.
 ## Usage
 
 ```bash
-shiplog draft                 # last commits, default voice, interactive
+shiplog draft                 # last commits, default voice (prints draft + hints)
 shiplog draft --n 3 --copy    # last 3 commits, copy draft to clipboard
 shiplog draft --open          # open X's compose window pre-filled
 shiplog draft --tone funny    # technical | narrative | punchy | funny
