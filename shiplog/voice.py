@@ -29,6 +29,8 @@ def build_system_prompt(
     voice_examples: list[str] | None = None,
 ) -> str:
     if prompt_path is not None:
+        if not prompt_path.is_file():
+            raise VoiceError(f"Prompt file not found: {prompt_path}")
         base = prompt_path.read_text(encoding="utf-8")
     else:
         base = _load_preset(tone or DEFAULT_TONE)

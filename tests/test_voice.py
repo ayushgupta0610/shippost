@@ -32,3 +32,13 @@ def test_voice_examples_are_appended():
     prompt = build_system_prompt(voice_examples=["just shipped a parser", "ship it"])
     assert "just shipped a parser" in prompt
     assert "ship it" in prompt
+
+
+def test_all_whitespace_examples_produce_no_block():
+    prompt = build_system_prompt(voice_examples=["  ", ""])
+    assert "Here are examples" not in prompt
+
+
+def test_missing_prompt_file_raises_voice_error(tmp_path: Path):
+    with pytest.raises(VoiceError):
+        build_system_prompt(prompt_path=tmp_path / "does-not-exist.md")
