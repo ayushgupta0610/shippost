@@ -51,7 +51,7 @@ def read_commits(
     args = ["log", f"--pretty=format:{_FORMAT}"]
     if since:
         args.append(f"--since={since}")
-    if n:
+    if n is not None:
         args.append(f"-n{n}")
 
     raw = _run_git(repo, *args)
