@@ -2,8 +2,8 @@ from unittest.mock import AsyncMock
 
 from typer.testing import CliRunner
 
-from shiplog import cli as cli_mod
-from shiplog.models import PostDraft
+from shippost import cli as cli_mod
+from shippost.models import PostDraft
 
 runner = CliRunner()
 
@@ -58,7 +58,7 @@ def test_draft_open_x_calls_webbrowser(monkeypatch):
 
 
 def test_draft_reports_git_error(monkeypatch):
-    from shiplog.git_reader import GitError
+    from shippost.git_reader import GitError
 
     monkeypatch.setattr(
         cli_mod,

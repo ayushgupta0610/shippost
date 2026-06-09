@@ -4,7 +4,7 @@ from unittest.mock import AsyncMock
 import pytest
 from pydantic import BaseModel
 
-from shiplog.llm import chat as chat_mod
+from shippost.llm import chat as chat_mod
 
 
 class _Out(BaseModel):

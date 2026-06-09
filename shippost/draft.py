@@ -2,8 +2,8 @@
 
 from openai.types.chat import ChatCompletionMessageParam
 
-from shiplog.llm.chat import chat_structured
-from shiplog.models import CommitContext, DraftPayload
+from shippost.llm.chat import chat_structured
+from shippost.models import CommitContext, DraftPayload
 
 
 def _render_commits(commits: list[CommitContext]) -> str:

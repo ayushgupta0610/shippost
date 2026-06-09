@@ -6,7 +6,7 @@ from dataclasses import dataclass
 from openai.types.chat import ChatCompletionMessageParam
 from pydantic import BaseModel, ValidationError
 
-from shiplog.llm.client import get_client
+from shippost.llm.client import get_client
 
 
 @dataclass(frozen=True)

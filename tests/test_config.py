@@ -1,4 +1,4 @@
-from shiplog.config import Settings
+from shippost.config import Settings
 
 
 def test_defaults_are_sane():

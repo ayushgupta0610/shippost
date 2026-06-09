@@ -4,7 +4,7 @@ import subprocess
 from datetime import datetime
 from pathlib import Path
 
-from shiplog.models import CommitContext
+from shippost.models import CommitContext
 
 _RS = "\x1e"  # record separator
 _FS = "\x1f"  # field separator

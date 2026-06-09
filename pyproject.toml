@@ -1,5 +1,5 @@
 [project]
-name = "shiplog"
+name = "shippost"
 version = "0.1.0"
 description = "Turn your git commits into a creative build-in-public X post."
 readme = "README.md"
@@ -15,7 +15,7 @@ dependencies = [
 ]
 
 [project.scripts]
-shiplog = "shiplog.cli:app"
+shippost = "shippost.cli:app"
 
 [dependency-groups]
 dev = [
@@ -38,7 +38,7 @@ line-length = 88
 select = ["E", "F", "I", "UP", "B"]
 
 [tool.pyright]
-include = ["shiplog", "tests"]
+include = ["shippost", "tests"]
 typeCheckingMode = "standard"
 
 [build-system]

@@ -3,7 +3,7 @@ from datetime import UTC, datetime
 import pytest
 from pydantic import ValidationError
 
-from shiplog.models import CommitContext, DraftPayload, PostDraft
+from shippost.models import CommitContext, DraftPayload, PostDraft
 
 
 def _commit() -> CommitContext:

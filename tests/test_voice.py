@@ -2,7 +2,7 @@ from pathlib import Path
 
 import pytest
 
-from shiplog.voice import VoiceError, build_system_prompt
+from shippost.voice import VoiceError, build_system_prompt
 
 
 def test_default_is_technical():

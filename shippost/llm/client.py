@@ -4,7 +4,7 @@ from functools import lru_cache
 
 from openai import AsyncOpenAI
 
-from shiplog.config import settings
+from shippost.config import settings
 
 
 @lru_cache(maxsize=1)

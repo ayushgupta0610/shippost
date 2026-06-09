@@ -1,7 +1,7 @@
 """Assemble the system prompt: preset / user template + optional voice anchors.
 
 The prompt files in `prompts/` and a user-supplied `--prompt` file are the
-hackable heart of shiplog: change the voice by editing markdown, not code.
+hackable heart of shippost: change the voice by editing markdown, not code.
 """
 
 from pathlib import Path

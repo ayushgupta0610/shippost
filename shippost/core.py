@@ -3,11 +3,11 @@
 import asyncio
 from pathlib import Path
 
-from shiplog.config import settings
-from shiplog.draft import generate_draft
-from shiplog.git_reader import read_commits
-from shiplog.models import PostDraft
-from shiplog.voice import build_system_prompt
+from shippost.config import settings
+from shippost.draft import generate_draft
+from shippost.git_reader import read_commits
+from shippost.models import PostDraft
+from shippost.voice import build_system_prompt
 
 
 async def draft_post(

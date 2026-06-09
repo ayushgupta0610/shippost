@@ -3,10 +3,10 @@ from unittest.mock import AsyncMock
 
 import pytest
 
-from shiplog import core as core_mod
-from shiplog.config import settings
-from shiplog.git_reader import GitError
-from shiplog.models import CommitContext, DraftPayload, PostDraft
+from shippost import core as core_mod
+from shippost.config import settings
+from shippost.git_reader import GitError
+from shippost.models import CommitContext, DraftPayload, PostDraft
 
 
 def _commit() -> CommitContext:

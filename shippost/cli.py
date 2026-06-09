@@ -1,4 +1,4 @@
-"""shiplog CLI — `shiplog draft`."""
+"""shippost CLI — `shippost draft`."""
 
 import asyncio
 import urllib.parse
@@ -12,10 +12,10 @@ import typer
 from rich.console import Console
 from rich.panel import Panel
 
-from shiplog.core import draft_post
-from shiplog.git_reader import GitError
-from shiplog.models import PostDraft
-from shiplog.voice import VoiceError
+from shippost.core import draft_post
+from shippost.git_reader import GitError
+from shippost.models import PostDraft
+from shippost.voice import VoiceError
 
 app = typer.Typer(
     add_completion=False,
@@ -26,11 +26,11 @@ console = Console()
 
 @app.callback()
 def _callback() -> None:
-    """shiplog — turn git commits into build-in-public posts."""
+    """shippost — turn git commits into build-in-public posts."""
 
 
 _X_INTENT = "https://x.com/intent/tweet?text="
-_VOICE_FILE = Path.home() / ".shiplog" / "voice.txt"
+_VOICE_FILE = Path.home() / ".shippost" / "voice.txt"
 
 
 def _load_voice_examples() -> list[str]:

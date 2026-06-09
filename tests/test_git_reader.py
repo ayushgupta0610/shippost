@@ -3,7 +3,7 @@ from pathlib import Path
 
 import pytest
 
-from shiplog.git_reader import GitError, read_commits
+from shippost.git_reader import GitError, read_commits
 
 
 def _git(repo: Path, *args: str) -> None:

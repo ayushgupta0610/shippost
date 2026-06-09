@@ -1,6 +1,6 @@
 import pytest
 
-from shiplog.llm import client as client_mod
+from shippost.llm import client as client_mod
 
 
 def test_get_client_raises_without_key(monkeypatch):

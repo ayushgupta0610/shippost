@@ -3,9 +3,9 @@ from unittest.mock import AsyncMock
 
 import pytest
 
-from shiplog import draft as draft_mod
-from shiplog.llm.chat import LLMResult, TokenUsage
-from shiplog.models import CommitContext, DraftPayload
+from shippost import draft as draft_mod
+from shippost.llm.chat import LLMResult, TokenUsage
+from shippost.models import CommitContext, DraftPayload
 
 
 def _commit(subject: str) -> CommitContext:
