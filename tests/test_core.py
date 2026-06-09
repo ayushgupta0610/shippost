@@ -1,7 +1,11 @@
 from datetime import UTC, datetime
 from unittest.mock import AsyncMock
 
+import pytest
+
 from shiplog import core as core_mod
+from shiplog.config import settings
+from shiplog.git_reader import GitError
 from shiplog.models import CommitContext, DraftPayload, PostDraft
 
 
@@ -41,4 +45,13 @@ async def test_draft_post_defaults_model_from_settings(monkeypatch):
         AsyncMock(return_value=DraftPayload(body="x", variants=[])),
     )
     result = await core_mod.draft_post()
-    assert result.model_used == "deepseek/deepseek-v4-flash"
+    assert result.model_used == settings.default_model
+
+
+async def test_draft_post_propagates_git_error(monkeypatch):
+    def _boom(**kw):
+        raise GitError("not a git repo")
+
+    monkeypatch.setattr(core_mod, "read_commits", _boom)
+    with pytest.raises(GitError):
+        await core_mod.draft_post()

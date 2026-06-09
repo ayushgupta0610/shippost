@@ -1,5 +1,6 @@
 """The engine. CLI / Skill / MCP frontends all call `draft_post`."""
 
+import asyncio
 from pathlib import Path
 
 from shiplog.config import settings
@@ -23,7 +24,10 @@ async def draft_post(
     effects beyond reading git + calling the LLM."""
     chosen_model = model or settings.default_model
 
-    commits = read_commits(
+    # read_commits shells out (blocking); offload so async frontends (MCP/web)
+    # don't stall their event loop.
+    commits = await asyncio.to_thread(
+        read_commits,
         since=since,
         n=n,
         repo_path=repo_path,
