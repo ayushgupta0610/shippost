@@ -9,6 +9,8 @@ from shiplog.config import settings
 
 @lru_cache(maxsize=1)
 def get_client() -> AsyncOpenAI:
+    # One client per process. In tests, monkeypatch get_client on the consuming
+    # module, or call get_client.cache_clear() in fixture teardown.
     if not settings.openrouter_api_key:
         raise RuntimeError(
             "OPENROUTER_API_KEY is not set. Add it to .env before drafting."

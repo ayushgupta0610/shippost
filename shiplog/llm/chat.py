@@ -37,8 +37,9 @@ async def chat_structured[T: BaseModel](
     """
     client = get_client()
     schema = json.dumps(response_model.model_json_schema())
+    # Schema instruction goes first: a system turn after user turns is mishandled
+    # by some OpenRouter-routed models. Caller-supplied messages follow it.
     convo: list[ChatCompletionMessageParam] = [
-        *messages,
         {
             "role": "system",
             "content": (
@@ -46,6 +47,7 @@ async def chat_structured[T: BaseModel](
                 f"schema (no prose, no code fences): {schema}"
             ),
         },
+        *messages,
     ]
 
     last_error = "unknown error"
@@ -55,6 +57,9 @@ async def chat_structured[T: BaseModel](
             messages=convo,
             response_format={"type": "json_object"},
         )
+        if not resp.choices:
+            last_error = "model returned no choices"
+            continue
         raw = resp.choices[0].message.content or ""
         try:
             data = response_model.model_validate_json(raw)
