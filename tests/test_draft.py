@@ -52,3 +52,28 @@ async def test_generate_draft_calls_llm_and_returns_payload(monkeypatch):
 async def test_generate_draft_raises_on_no_commits():
     with pytest.raises(ValueError):
         await draft_mod.generate_draft([], system_prompt="x", model="m")
+
+
+def test_render_commits_covers_no_files_truncated_and_multi():
+    c1 = CommitContext(
+        sha="deadbeef1234",
+        author="A",
+        committed_at=datetime(2026, 6, 9, tzinfo=UTC),
+        subject="first",
+        diff_summary="d1",
+        diff_truncated=True,
+    )
+    c2 = CommitContext(
+        sha="cafef00d5678",
+        author="A",
+        committed_at=datetime(2026, 6, 9, tzinfo=UTC),
+        subject="second",
+        files_changed=["x.py"],
+        diff_summary="d2",
+    )
+    out = draft_mod._render_commits([c1, c2])
+    assert "(no files)" in out          # c1 has no files
+    assert "[diff truncated]" in out    # c1 is truncated
+    assert "deadbee" in out             # sha[:7]
+    assert "x.py" in out                # c2 files rendered
+    assert "---" in out                 # multi-commit separator
