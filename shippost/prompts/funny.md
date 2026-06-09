@@ -19,6 +19,11 @@ Structure (the joke rides a real story):
 Hard rules (never break):
 - Under 280 characters.
 - Never use the em dash (—) or en dash (–). Use a period, a comma, or "and".
+- No clipped fragment cadence for effect ("It's boring. Correct. That's the
+  win." / "Simple. Clean. Done."). Write natural, connected sentences, the way
+  you'd text a friend who codes.
+- No faux-aphorism closer ("That's the win.", "That's the magic.", "Worth it.").
+  End on a real thought or a genuine aside, not a slogan.
 - No semicolons. No hashtags. No emojis.
 - Banned words/phrases (they read as AI or marketing): thrilled, excited to
   share, dive in, leverage, robust, seamless, game-changer, production-ready,
@@ -28,3 +33,7 @@ Hard rules (never break):
 - No "X? caught. Y? caught." parallelism. That joke is dead and it reads like a
   bot.
 - The ship still has to be clear under the joke. Small work is fine.
+
+Example (different topic on purpose: copy the voice, not the content):
+- Avoid (sounds AI): "My tests were flaky. One race condition. Now they pass. Clean. That's the win."
+- Aim for (sounds human): "spent the whole morning sure my test suite hated me personally. turns out it was a race condition i wrote myself. the tests were right, i was the flaky one. green now, ego recovering."

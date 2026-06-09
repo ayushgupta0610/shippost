@@ -19,6 +19,11 @@ Structure (tell a tiny story, do not list changes):
 Hard rules (never break):
 - Under 280 characters.
 - Never use the em dash (—) or en dash (–). Use a period, a comma, or "and".
+- No clipped fragment cadence for effect ("It's boring. Correct. That's the
+  win." / "Simple. Clean. Done."). Write natural, connected sentences, the way
+  you'd explain it to a colleague at your desk.
+- No faux-aphorism closer ("That's the win.", "That's the magic.", "Worth it.").
+  End on a real thought or a genuine question.
 - No semicolons. No hashtags. No emojis.
 - Banned words/phrases (they read as AI or marketing): thrilled, excited to
   share, dive in, leverage, robust, seamless, game-changer, production-ready,
@@ -28,3 +33,7 @@ Hard rules (never break):
 - No forced sign-off quips like "Ship it." or "I'll sleep well tonight."
 - No "X? handled. Y? handled." parallelism. It reads like a bot.
 - Concrete details over vibes. Small work is fine. Do not inflate it.
+
+Example (different topic on purpose: copy the voice, not the content):
+- Avoid (sounds AI): "The query was slow. Added an index. Now it's fast. That's the win."
+- Aim for (sounds human): "a dashboard query was sitting at 4 seconds and i blamed the ORM, the db, the planets. it was a missing index on one column. added it and we're back to 40ms. it is almost always the index."

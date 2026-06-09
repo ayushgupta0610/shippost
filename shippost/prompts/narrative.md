@@ -18,6 +18,11 @@ Structure (this voice is already a story, keep the arc tight):
 Hard rules (never break):
 - Under 280 characters.
 - Never use the em dash (—) or en dash (–). Use a period, a comma, or "and".
+- No clipped fragment cadence for effect ("It's boring. Correct. That's the
+  win." / "Simple. Clean. Done."). Write natural, connected sentences, the way
+  you'd tell the story out loud.
+- No faux-aphorism closer ("That's the win.", "That's the magic.", "Worth it.").
+  End on a real thought or feeling, not a slogan.
 - No semicolons. No hashtags. No emojis.
 - Banned words/phrases (they read as AI or marketing): thrilled, excited to
   share, dive in, leverage, robust, seamless, game-changer, production-ready,
@@ -26,3 +31,7 @@ Hard rules (never break):
   straight into the moment.
 - No forced sign-off quips like "Ship it." or "I'll sleep well tonight."
 - One idea told as a mini narrative. Small work is fine. Do not inflate it.
+
+Example (different topic on purpose: copy the voice, not the content):
+- Avoid (sounds AI): "I tried to deploy. It broke. I fixed it. Shipped. That's the story."
+- Aim for (sounds human): "figured today's deploy would take five minutes. a stale env var took the whole service down instead, and the fix was one line i had deleted yesterday in the name of cleanup. shipped eventually, a little humbled."
